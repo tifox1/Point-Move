@@ -1,7 +1,9 @@
 
 import pygame
-from pygame.constants import K_RIGHT, K_SPACE, KEYDOWN, K_a, K_d
+from pygame.constants import K_SPACE, K_a, K_d
 from pelota import *
+from pared import *
+from superficie import Surface
 # definimos la variable que contendra la cantidad de fps que tiene el juego
 FPS = 60
 # Inicializamos pygame
@@ -20,11 +22,21 @@ run = True
 
 # Definimos los fps
 clock = pygame.time.Clock()
-# instancia de la pelotad
+# Instanciamos los objetos que se mostraran en la pantalla
 ball = BallCharacter()
 
+surface = Surface()
+
+wall = Wall()
+
 # definimos los colores que usaremos en la ventana
-black = (0, 0, 0)
+BLUE = (34, 113, 179)
+# object interception
+intercept_obj = {
+    'intercept': 0,
+    'object_position': None,
+}
+
 
 # En esta variable se guardan los estados de las teclas: True si estan presionados y False si no lo estan
 key_events = {
@@ -36,7 +48,7 @@ key_events = {
 
 
 while run:
-    #Actualizacion del estado del salto
+    # Actualizacion del estado del salto
     key_events['key_space'] = ball.jump_state
     clock.tick(FPS)
     # Capturamos los eventos que se han producido
@@ -66,22 +78,35 @@ while run:
         else:
             key_events['static'] = True
 
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_SPACE:
-        #         key_events['key_space'] = True
-        #     else:
-        #         key_events['static'] = True
-        #         key_events['key_spac'] = False
-
     # una vez obtenidos los resultados finales de key_events
     # pasamos el estado de los teclados para hacer los moviminentos
-    # print(ball.jump)
-    ball.moves(screen, key_events)
+    # Dibuja la pared
+    surface.rect(screen)
+    wall.rect(screen)
+    ball.moves(
+        screen,
+        key_events,
+        intercept_obj['object_position'],
+        intercept_obj['intercept']
+    )
+    # Eventos dentro del juego
+    if ball.ball_rect.colliderect(wall.wall_rect) == 1:
+        intercept_obj['intercept'] = 1
+        intercept_obj['object_position'] = wall.initial_y
+
+    elif ball.ball_rect.colliderect(surface.surface_rect) == 1:
+        intercept_obj['intercept'] = 1
+        intercept_obj['object_position'] = surface.initial_y
+        
+    elif ball.ball_rect.colliderect(wall.wall_rect) == 0 or ball.ball_rect.colliderect(wall.wall_rect) == 0:
+        intercept_obj['intercept'] = 0
+        intercept_obj['object_position'] = surface.initial_y
+
+    print(intercept_obj['intercept'])
     # actualiza la ventana, de lo contrario todo quedara estatico
     pygame.display.update()
-    screen.fill(black)
+    screen.fill(BLUE)
     pygame.event.pump()
 
 # Salgo de pygame
 pygame.quit()
-
