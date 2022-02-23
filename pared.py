@@ -5,7 +5,7 @@ RED = (255,69,0)
 class Wall:
     def __init__(self):
         self.initial_x = 600
-        self.initial_y = 200
+        self.initial_y = 190
         self.width = 10
         self.height = 200 
         self.wall_rect = None

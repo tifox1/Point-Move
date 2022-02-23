@@ -1,4 +1,5 @@
 
+from pickle import FALSE
 import pygame
 from pygame.constants import K_SPACE, K_a, K_d
 from pelota import *
@@ -88,7 +89,7 @@ while run:
         key_events,
         intercept_obj['object_position'],
         intercept_obj['intercept']
-    )
+    )       
     # Eventos dentro del juego
     if ball.ball_rect.colliderect(wall.wall_rect) == 1:
         intercept_obj['intercept'] = 1
@@ -98,11 +99,10 @@ while run:
         intercept_obj['intercept'] = 1
         intercept_obj['object_position'] = surface.initial_y
         
-    elif ball.ball_rect.colliderect(wall.wall_rect) == 0 or ball.ball_rect.colliderect(wall.wall_rect) == 0:
+    elif ball.ball_rect.colliderect(wall.wall_rect) == 0:
         intercept_obj['intercept'] = 0
         intercept_obj['object_position'] = surface.initial_y
-
-    print(intercept_obj['intercept'])
+    
     # actualiza la ventana, de lo contrario todo quedara estatico
     pygame.display.update()
     screen.fill(BLUE)

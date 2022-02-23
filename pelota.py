@@ -33,35 +33,37 @@ class BallCharacter:
     # definimos la funcion que hace los tipos de movimientos
 
     def moves(self, screen, move_type, object_pos, intercept):
-        # Intercepcion entre la pelota  y un objeto
-        if intercept == 1:
-            self.y = object_pos - self.ball_radio
-            self.jump_state = False
-        # else:
-        #     if self.jump_state == False:
-        #         self.y += self.v_y
-        #         self.v_y += self.gravity
 
         # movimientos
+        if intercept == 0 and self.jump_state == False:
+            self.y += self.v_y
+            self.v_y -= self.gravity
+            
         if move_type['key_d']:
             # para hacer que la pelota se mueva, le sumo 1 a la posicion variante
             self.ball_rect = pygame.draw.circle(
-                screen, RED, (self.x, self.y), self.ball_radio)
+                screen, 
+                RED, 
+                (self.x, self.y), 
+                self.ball_radio
+            )
             self.x += self.speed
 
         if move_type['key_a']:
             # para hacer que la pelota se mueva, le sumo 1 a la posicion variante
             self.ball_rect = pygame.draw.circle(
-                screen, RED, (self.x, self.y), self.ball_radio)
+                screen,
+                RED, 
+                (self.x, self.y), 
+                self.ball_radio
+            )
             self.x -= self.speed
 
-        # si esta condicion se cumple la pelota sera imprimida sin modificar la posicion
-        if move_type['static']:
-            self.ball_rect = pygame.draw.circle(
-                screen, RED, (self.x, self.y), self.ball_radio)
-        
         # movimiento de salto
         if move_type['key_space']:
+            if self.jump_state == False:
+                self.y = object_pos - (self.ball_radio)
+                intercept = 0
             # una vez que la pelota comienze a elevarse el estavo sera True
             self.jump_state = True
             # la pelota aumenta la altura de acuerdo a v_y
@@ -69,10 +71,24 @@ class BallCharacter:
             # mientras la pelota va mas arriba la aceleracion va disminuyendo hasta llegar a su punto maximo
             self.v_y -= self.gravity
             # si la posicion de la pelota es igual a la posicion inicial se resetearan la posicion y aceleracion
+            print(intercept)
             if intercept == 1:
-                print('Condicion')
-                self.y = object_pos - (self.ball_radio + 1)
+                self.y = object_pos - (self.ball_radio - 2)
                 self.v_y = 20
                 # una vez que la pelota llegue al punto final de su trayectoria el estado sera False para que no sigua saltando
                 self.jump_state = False
+
+        # si esta condicion se cumple la pelota sera imprimida sin modificar la posicion
+        if move_type['static']:
+            print('Static')
+            self.ball_rect = pygame.draw.circle(
+                screen, 
+                RED, 
+                (self.x, self.y), 
+                self.ball_radio
+            )
+        
+        
+        
+        
 
