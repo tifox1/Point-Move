@@ -38,6 +38,9 @@ class BallCharacter:
         if intercept == 0 and self.jump_state == False:
             self.y += self.v_y
             self.v_y -= self.gravity
+        elif intercept == 1:
+                self.y = object_pos - (self.ball_radio - 2)
+                self.v_y = 20
             
         if move_type['key_d']:
             # para hacer que la pelota se mueva, le sumo 1 a la posicion variante
