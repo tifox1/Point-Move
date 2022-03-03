@@ -16,7 +16,7 @@ screen = pygame.display.set_mode(size)
 
 
 # Cambio el título de la ventana
-pygame.display.set_caption("Simulacion")
+pygame.display.set_caption("Point Move")
 
 # Comenzamos el bucle del juego
 run = True

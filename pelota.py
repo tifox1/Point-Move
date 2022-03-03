@@ -35,6 +35,7 @@ class BallCharacter:
     def moves(self, screen, move_type, object_pos, intercept):
 
         # movimientos
+        # movimiento de caida 
         if intercept == 0 and self.jump_state == False:
             self.y += self.v_y
             self.v_y -= self.gravity
@@ -74,10 +75,9 @@ class BallCharacter:
             # mientras la pelota va mas arriba la aceleracion va disminuyendo hasta llegar a su punto maximo
             self.v_y -= self.gravity
             # si la posicion de la pelota es igual a la posicion inicial se resetearan la posicion y aceleracion
-            print(intercept)
             if intercept == 1:
                 self.y = object_pos - (self.ball_radio - 2)
-                self.v_y = 20
+                self.v_y = 30
                 # una vez que la pelota llegue al punto final de su trayectoria el estado sera False para que no sigua saltando
                 self.jump_state = False
 
